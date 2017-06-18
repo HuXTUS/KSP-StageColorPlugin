@@ -218,7 +218,6 @@ namespace HuXTUS
 		}
 
 		private bool _guiExpanded = false;
-		private bool _needExpand = false;
 		
 		private ColorData _curentColorDataItem = null;
 		protected void OnGUI()
@@ -241,11 +240,6 @@ namespace HuXTUS
 			_windowsPosition.height = 10;
 			if (_guiExpanded) {
 				_windowStyle.fixedWidth = 250;
-				if (_needExpand) {
-					_windowsPosition.yMin -= 100;
-					_windowsPosition.yMax -= 100;
-					_needExpand = false;
-				}
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowExpanded, selectedIcons[0].partType, _windowStyle);
 			} else {
 				_windowStyle.fixedWidth = 80;
@@ -296,7 +290,6 @@ namespace HuXTUS
 					ScreenMessages.PostScreenMessage("<color=orange>" + "Select stage icon first" + "</color>", 3f, ScreenMessageStyle.UPPER_CENTER);
 					return;
 				} else {
-					_needExpand = true;
 					_guiExpanded = true;
 				}
 
