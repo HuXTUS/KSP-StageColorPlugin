@@ -1,10 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-
 using KSP.IO;
 using KSP.UI.Screens;
 using System.Collections;
@@ -31,7 +28,6 @@ namespace HuXTUS
 
 		public static Texture2D makeTexFunny(int width, int height, int mode)
 		{
-			
 			float red = 0, blue = 0, green = 0;
 			
 			Color[] pix = new Color[width * height];
