@@ -32,3 +32,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.dll
+*.xml
+*.lnk
+*.bat
+*.nupkg
+*.dll
+packages/UnityEngine.1.0.0/UnityEngine.1.0.0.nupkg

@@ -9,13 +9,13 @@ using System.Collections;
 
 namespace HuXTUS
 {
-	
+
 	[KSPAddon(KSPAddon.Startup.FlightAndEditor, false)]
 	public class StageColorPlugin : MonoBehaviour
 	{
 		
 		private float lastUpdate = 0.0f;
-		private float updateInterval = 1.0f;
+		private float updateInterval = 0.3f;
 		
 		PluginConfiguration cfg;
 		
@@ -29,7 +29,6 @@ namespace HuXTUS
 			
 			public ColorData(Color background, Color icon)
 			{
-					
 				this.backgroundColor = background;
 				this.iconColor = icon;				
 				
@@ -39,7 +38,6 @@ namespace HuXTUS
 			
 			public ColorData()
 			{
-				
 				this.backgroundColor = NONE_COLOR;
 				this.iconColor = NONE_COLOR;
 				
@@ -52,24 +50,20 @@ namespace HuXTUS
 
 		public StageColorPlugin()
 		{
-			
 		}
 		
 		void Start()
 		{
-
 			if (!_isLoaded) {
 				initStyles();
 				readConfig();
 				
 				_isLoaded = true;
 			}			
-			
 		}
 		
 		void readConfig()
 		{
-			
 			cfg = PluginConfiguration.CreateForType<StageColorPlugin>();
 			cfg.load();
 
@@ -100,7 +94,6 @@ namespace HuXTUS
 		
 		void saveColorsToCfg()
 		{
-			
 			string s = "";
 			
 			foreach (DictionaryEntry element in hashColors) {
@@ -115,19 +108,19 @@ namespace HuXTUS
 			}
 			
 			cfg["colors"] = s;
-			
 		}
 
-		void Awake()
-		{
-		}
-		
 		void Update()
 		{
 			if ((Time.time - lastUpdate) > updateInterval) {
 				lastUpdate = Time.time;
 				
-				updateInterval = (HighLogic.LoadedSceneIsEditor) ? 0.5f : 5.0f;
+				if (HighLogic.LoadedSceneIsEditor) {
+					updateInterval = 0.5f;
+				} else {
+					if (updateInterval < 5.0f)
+						updateInterval += 0.5f;
+				}
 
 				if (StageManager.Selection.Count > 0) {
 					
@@ -161,14 +154,10 @@ namespace HuXTUS
 							gicon.SetIconColor(element.isHereIcon ? element.iconColor : ColorData.NONE_COLOR);
 						}
 					} 
-			}				
+			}	
 			
 		}
- 
-		void FixedUpdate()
-		{ 
-		}
-		
+
 		private Rect _windowsPosition = new Rect();
 		private bool _isLoaded = false;
 		
@@ -177,7 +166,6 @@ namespace HuXTUS
 
 		private void initStyles()
 		{
-			
 			_windowStyle = new GUIStyle(HighLogic.Skin.window);
 			_windowStyle.fixedWidth = 250;
 
@@ -245,13 +233,10 @@ namespace HuXTUS
 				_windowStyle.fixedWidth = 80;
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowMinimized, "S C P", _windowStyle);	
 			}
-			
-			
 		}
 		
 		public void OnWindowExpanded(int windowId)
 		{
-		
 			GUILayout.BeginVertical();
 			
 			_curentColorDataItem.isHereBackground = GUILayout.Toggle(_curentColorDataItem.isHereBackground, _curentColorDataItem.isHereBackground ? "Background color ON" : "Background color OFF", _toggleStyle);
@@ -274,7 +259,7 @@ namespace HuXTUS
 				
 				_guiExpanded = false;
 			}        
-			
+
 			GUILayout.EndVertical();			
 			
 			GUI.DragWindow();
@@ -292,7 +277,6 @@ namespace HuXTUS
 				} else {
 					_guiExpanded = true;
 				}
-
 			}        
 			
 			GUILayout.EndVertical();			
