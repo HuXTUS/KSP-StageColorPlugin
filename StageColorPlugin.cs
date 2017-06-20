@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using KSP.IO;
 using KSP.UI.Screens;
 using System.Collections;
 
@@ -13,103 +11,34 @@ namespace HuXTUS
 	[KSPAddon(KSPAddon.Startup.FlightAndEditor, false)]
 	public class StageColorPlugin : MonoBehaviour
 	{
-		
+
 		private float lastUpdate = 0.0f;
 		private float updateInterval = 0.3f;
 		
-		PluginConfiguration cfg;
-		
-		class ColorData
-		{
-			
-			public static Color NONE_COLOR = XKCDColors.White;
+		ConfigUtils config;
 
-			public Color backgroundColor, iconColor;
-			public bool isHereBackground, isHereIcon;
-			
-			public ColorData(Color background, Color icon)
-			{
-				this.backgroundColor = background;
-				this.iconColor = icon;				
-				
-				this.isHereBackground = !background.Equals(NONE_COLOR);
-				this.isHereIcon = !icon.Equals(NONE_COLOR);
-			}
-			
-			public ColorData()
-			{
-				this.backgroundColor = NONE_COLOR;
-				this.iconColor = NONE_COLOR;
-				
-				this.isHereBackground = false;
-				this.isHereIcon = false;
-			}
-		}
+		public Hashtable hashColors = new Hashtable();
 		
-		Hashtable hashColors = new Hashtable();
+		public PluginModes pluginMode = PluginModes.PART_COLORING;
 
 		public StageColorPlugin()
 		{
 		}
-		
+
 		void Start()
 		{
 			if (!_isLoaded) {
-				initStyles();
-				readConfig();
+				
+				config = new ConfigUtils(this);				
+				
+				config.initStyles();			
+
+				config.readConfig();
 				
 				_isLoaded = true;
 			}			
 		}
 		
-		void readConfig()
-		{
-			cfg = PluginConfiguration.CreateForType<StageColorPlugin>();
-			cfg.load();
-
-			_windowsPosition = cfg.GetValue<Rect>("gui_position");
-
-			string strColors = cfg.GetValue<string>("colors");
-			if (strColors != null) {
-				var splittedColors = strColors.Split(new string[] { ",", ";" }, StringSplitOptions.None);
-				for (int i = 0; i < splittedColors.Count() - 2; i += 3) {
-					var colorData = new ColorData(XKCDColors.ColorTranslator.FromHtml(splittedColors[i + 1]), XKCDColors.ColorTranslator.FromHtml(splittedColors[i + 2]));
-					hashColors[splittedColors[i]] = colorData;
-				}			
-			}
-		}
-		
-		void saveConfig()
-		{
-			saveGUIPosition();
-			saveColorsToCfg();
-			
-			cfg.save();
-		}
-		
-		void saveGUIPosition()
-		{
-			cfg["gui_position"] = new Rect(_windowsPosition);
-		}
-		
-		void saveColorsToCfg()
-		{
-			string s = "";
-			
-			foreach (DictionaryEntry element in hashColors) {
-				s += element.Key + ",";
-				
-				var it = (ColorData)element.Value;
-				
-				s += (it.isHereBackground) ? XKCDColors.ColorTranslator.ToHex(it.backgroundColor) : XKCDColors.ColorTranslator.ToHex(ColorData.NONE_COLOR);
-				s += ",";
-				s += (it.isHereIcon) ? XKCDColors.ColorTranslator.ToHex(it.iconColor) : XKCDColors.ColorTranslator.ToHex(ColorData.NONE_COLOR);
-				s += ";";
-			}
-			
-			cfg["colors"] = s;
-		}
-
 		void Update()
 		{
 			if ((Time.time - lastUpdate) > updateInterval) {
@@ -121,6 +50,10 @@ namespace HuXTUS
 					if (updateInterval < 5.0f)
 						updateInterval += 0.5f;
 				}
+				
+				if (pluginMode == PluginModes.SIMPLE)
+					return;
+
 
 				if (StageManager.Selection.Count > 0) {
 					
@@ -158,56 +91,15 @@ namespace HuXTUS
 			
 		}
 
-		private Rect _windowsPosition = new Rect();
-		private bool _isLoaded = false;
+		public Rect _windowsPosition = new Rect();
+		bool _isLoaded = false;
 		
-		private GUIStyle _windowStyle, _labelStyle, _toggleStyle, _sliderStyle, _buttonStyle, _buttonFunnyStyle;
-		private GUIStyle _sliderStyleThumbRed, _sliderStyleThumbGreen, _sliderStyleThumbBlue;
+		public GUIStyle _windowStyle, _labelStyle, _toggleStyle, _sliderStyle, _buttonApplyStyle, _buttonModeStyle, _buttonSimpleStyle, _buttonFunnyStyle;
+		public GUIStyle _sliderStyleThumbRed, _sliderStyleThumbGreen, _sliderStyleThumbBlue;
 
-		private void initStyles()
-		{
-			_windowStyle = new GUIStyle(HighLogic.Skin.window);
-			_windowStyle.fixedWidth = 250;
-
-			_labelStyle = HighLogic.Skin.label;
-			
-			_toggleStyle = HighLogic.Skin.toggle;
-			
-			_sliderStyle = HighLogic.Skin.horizontalSlider;
-			
-			_buttonStyle = HighLogic.Skin.button;
-			
-			_buttonFunnyStyle = new GUIStyle(HighLogic.Skin.button);
-			_buttonFunnyStyle.normal.background = Utils.makeTexFunny(250, 250, 2);
-			_buttonFunnyStyle.hover.background = Utils.makeTexFunny(250, 250, 3);
-			_buttonFunnyStyle.active.background = Utils.makeTexFunny(250, 250, 1);			
-
-			var redThumbTex = Utils.makeTexFromColor(1, 1, Color.red);
-			_sliderStyleThumbRed = new GUIStyle(HighLogic.Skin.horizontalSliderThumb);
-			_sliderStyleThumbRed.normal.background = redThumbTex;
-			_sliderStyleThumbRed.hover.background = redThumbTex;
-			_sliderStyleThumbRed.focused.background = redThumbTex;
-			_sliderStyleThumbRed.active.background = redThumbTex;
-			
-			var greenThumbTex = Utils.makeTexFromColor(1, 1, Color.green);
-			_sliderStyleThumbGreen = new GUIStyle(HighLogic.Skin.horizontalSliderThumb);
-			_sliderStyleThumbGreen.normal.background = greenThumbTex;
-			_sliderStyleThumbGreen.hover.background = greenThumbTex;
-			_sliderStyleThumbGreen.focused.background = greenThumbTex;
-			_sliderStyleThumbGreen.active.background = greenThumbTex;
-			
-			var blueThumbTex = Utils.makeTexFromColor(1, 1, Color.blue);
-			_sliderStyleThumbBlue = new GUIStyle(HighLogic.Skin.horizontalSliderThumb);
-			_sliderStyleThumbBlue.normal.background = blueThumbTex;
-			_sliderStyleThumbBlue.hover.background = blueThumbTex;
-			_sliderStyleThumbBlue.focused.background = blueThumbTex;
-			_sliderStyleThumbBlue.active.background = blueThumbTex;
+		bool _guiExpanded = false;
 		
-		}
-
-		private bool _guiExpanded = false;
-		
-		private ColorData _curentColorDataItem = null;
+		ColorData _curentColorDataItem = null;
 		protected void OnGUI()
 		{
 			
@@ -228,7 +120,15 @@ namespace HuXTUS
 			_windowsPosition.height = 10;
 			if (_guiExpanded) {
 				_windowStyle.fixedWidth = 250;
-				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowExpanded, selectedIcons[0].partType, _windowStyle);
+				
+				string caption;
+				if (pluginMode == PluginModes.PART_COLORING)
+					caption = selectedIcons[0].partType;
+				else if (pluginMode == PluginModes.SIMPLE)
+					caption = "Simple mode";
+				else
+					caption = pluginMode.ToString();
+				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowExpanded, caption, _windowStyle);
 			} else {
 				_windowStyle.fixedWidth = 80;
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowMinimized, "S C P", _windowStyle);	
@@ -236,6 +136,16 @@ namespace HuXTUS
 		}
 		
 		public void OnWindowExpanded(int windowId)
+		{
+			if (pluginMode == PluginModes.PART_COLORING) {
+				drawInterfacePartColoring();
+			} else if (pluginMode == PluginModes.SIMPLE) {
+				drawInterfaceSimpleColoring();
+			} 
+			
+		}
+		
+		void drawInterfacePartColoring()
 		{
 			GUILayout.BeginVertical();
 			
@@ -253,18 +163,82 @@ namespace HuXTUS
 				_curentColorDataItem.iconColor.b = GUILayout.HorizontalSlider(_curentColorDataItem.iconColor.b, 0, 1, _sliderStyle, _sliderStyleThumbBlue);			
 			}
 			
-			if (GUILayout.Button("Apply and hide", _buttonStyle)) {
+			
+			drawFooter();
+		
+			GUILayout.EndVertical();			
+			
+			GUI.DragWindow();
+			
+		}
+		
+		void drawInterfaceSimpleColoring()
+		{
+			GUILayout.BeginVertical();
 
-				saveConfig();
-				
-				_guiExpanded = false;
-			}        
+			//Reset
+			GUILayout.Label("Reset stage icons colors", _labelStyle);
+			if (GUILayout.Button("Reset", _buttonSimpleStyle)) {
+				clearStageColors();
+			}
 
+			//Random all
+			GUILayout.Label("Fill all icons with random colors", _labelStyle);
+			
+			GUILayout.BeginHorizontal();
+			
+			if (GUILayout.Button("Back colors", _buttonSimpleStyle)) {
+				randomizeAllStageIconsColors(true, false);
+			}						
+			
+			if (GUILayout.Button("Icon colors", _buttonSimpleStyle)) {
+				randomizeAllStageIconsColors(false, true);
+			}
+		
+			GUILayout.EndHorizontal();
+
+
+			//Random stages
+			GUILayout.Label("Fill stages separately with random colors", _labelStyle);
+			
+			GUILayout.BeginHorizontal();
+			
+			if (GUILayout.Button("Back colors", _buttonSimpleStyle)) {
+				randomizeSeparatelyStageColors(true, false);
+			}						
+			
+			if (GUILayout.Button("Icon colors", _buttonSimpleStyle)) {
+				randomizeSeparatelyStageColors(false, true);
+			}
+		
+			GUILayout.EndHorizontal();
+
+			
+			drawFooter();
+		
 			GUILayout.EndVertical();			
 			
 			GUI.DragWindow();
 		}
+		
+		void drawFooter()
+		{
+			GUILayout.BeginHorizontal();
+				
+			if (GUILayout.Button("Mode", _buttonModeStyle)) {
+				changeMode();
+			}
+				
+			if (GUILayout.Button("Apply and Hide", _buttonApplyStyle)) {
 
+				config.saveConfig();
+
+				_guiExpanded = false;
+			}
+			GUILayout.EndHorizontal();
+			
+		}
+		 
 		public void OnWindowMinimized(int windowId)
 		{
 			GUILayout.BeginVertical();
@@ -283,11 +257,85 @@ namespace HuXTUS
 			
 			GUI.DragWindow();
 		}
+		
+		void changeMode()
+		{
+			if (pluginMode == PluginModes.PART_COLORING)
+				pluginMode = PluginModes.SIMPLE;
+			else if (pluginMode == PluginModes.SIMPLE)
+				pluginMode = PluginModes.PART_COLORING;
+			
+			if (pluginMode == PluginModes.SIMPLE)
+				clearStageColors();
+			
+		}
+		
+		void clearStageColors()
+		{
+			foreach (var stages in StageManager.Instance.Stages)
+				foreach (var icon in stages.Icons) {
+
+					icon.SetBackgroundColor(ColorData.NONE_COLOR);
+					icon.SetIconColor(ColorData.NONE_COLOR);
+
+					foreach (var gicon in icon.groupedIcons) {
+						gicon.SetBackgroundColor(ColorData.NONE_COLOR);
+						gicon.SetIconColor(ColorData.NONE_COLOR);
+					}
+				} 
+		}
+		
+
+		
+		void randomizeAllStageIconsColors(bool isBack, bool isIcon)
+		{
+			
+			NiceColorGenerator.reset();
+			
+			foreach (var stages in StageManager.Instance.Stages)
+				foreach (var icon in stages.Icons) {
+
+					if (isBack)
+						icon.SetBackgroundColor(NiceColorGenerator.next());
+					if (isIcon)
+						icon.SetIconColor(NiceColorGenerator.next());
+
+					foreach (var gicon in icon.groupedIcons) {
+						if (isBack)
+							gicon.SetBackgroundColor(NiceColorGenerator.next());
+						if (isIcon)
+							gicon.SetIconColor(NiceColorGenerator.next());
+					}
+				}  
+		}
+		
+		void randomizeSeparatelyStageColors(bool isBack, bool isIcon)
+		{
+			NiceColorGenerator.reset();
+			
+			foreach (var stages in StageManager.Instance.Stages) {
+				Color rndColor = NiceColorGenerator.next();
+				foreach (var icon in stages.Icons) {
+
+					if (isBack)
+						icon.SetBackgroundColor(rndColor);
+					if (isIcon)
+						icon.SetIconColor(rndColor);
+
+					foreach (var gicon in icon.groupedIcons) {
+						if (isBack)
+							gicon.SetBackgroundColor(rndColor);
+						if (isIcon)
+							gicon.SetIconColor(rndColor);
+					}
+				}
+			}
+		}
 
  
 		void OnDestroy()
 		{
-			saveConfig();
+			config.saveConfig();
 		}
 	}
 }
