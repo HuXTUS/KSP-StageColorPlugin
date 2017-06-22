@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using KSP.IO;
-using KSP.UI.Screens;
-using System.Collections;
 
 namespace HuXTUS
 {
@@ -51,6 +47,28 @@ namespace HuXTUS
  
 			return result;
 		}
+		
+		public static Texture2D makeTexRainbow(int width)
+		{
+			float hue = 0.0f;
+			float step = 1f / (float)width;
+			
+			Color[] pix = new Color[width ];
+
+			for (int i = 0; i < pix.Length; i++) {				
+				pix[i] = Color.HSVToRGB(hue += step, 1, 1);
+				if (hue > 1f)
+					hue -= 1f;
+			}
+ 
+			var result = new Texture2D(width, 1);
+			result.SetPixels(pix);
+			result.Apply();
+ 
+			return result;
+		}
+		
+
 		
 	}
 }

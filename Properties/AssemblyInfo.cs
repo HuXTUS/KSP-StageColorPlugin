@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("StageColorPlugin")]
-[assembly: AssemblyCopyright("No Copyright")]
+[assembly: AssemblyCopyright("HuXTUS")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,9 +21,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("16893ABE-FFB3-4683-9BDC-20724FF290A3")]
-
-
-
 
 // Version information for an assembly consists of the following four values:
 //

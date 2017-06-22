@@ -7,7 +7,7 @@
     <ProjectGuid>{1073550B-E6BD-4176-A303-A10D28CE41FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tac</RootNamespace>
+    <RootNamespace>HuXTUS</RootNamespace>
     <AssemblyName>StageColorPlugin</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,6 +55,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorData.cs" />
+    <Compile Include="ConfigUtils.cs" />
+    <Compile Include="NiceColorGenerator.cs" />
+    <Compile Include="PluginMode.cs" />
     <Compile Include="StageColorPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextureUtils.cs" />
