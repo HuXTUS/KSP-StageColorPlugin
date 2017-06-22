@@ -9,57 +9,63 @@ namespace HuXTUS
 {
 	public static class NiceColorGenerator
 	{
-		
-	 
-		static string[] xHexColors = {
-			"#f6008a",
-			"#e7b300",
-			"#ffe938",
-			"#cafc10",
-			"#417e2d",
-			"#00ce38",
-			"#c6cc6f",
-			"#ff8160",
-			"#fcb172",
-			"#c02cb3",
-			"#9d8bff",
-			"#b75046",
-			"#71b400",
-			"#018c1c",
-			"#fe8a00"
-		};
-		
-		static NiceColorGenerator()
-		{
-			foreach (var element in xHexColors) {
-				niceColors.Add(XKCDColors.ColorTranslator.FromHtml(element));
-			}
-			
-		}
 
-		
-		static List<Color> niceColors = new List<Color>();
-		
-		static int index = 0;
 		static System.Random rnd = new System.Random();
 
-		public static void reset()
-		{
-			index = 0;			
-		}
+		static Color last = new Color();
 		
+		public static bool isRainbow = true;
 		
-		static Color getNiceRandomColor()
+		static float step = 0.2f;
+		static float hueValue = 0.0f;
+		
+		public static void reset(int count)
 		{
-			if (index < niceColors.Count())
-				return niceColors[index++];
-			
-			return new Color((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble(), 1.0f);
+			step = (count > 0) ? 1.0f / (float)count : 0.2f;
+			hueValue += step;
 		}
 				
 		public static Color next()
 		{
-			return getNiceRandomColor();
+			
+			if (isRainbow) {
+				hueValue += step;
+				if (hueValue > 1)
+					hueValue -= 1.0f;
+				return Color.HSVToRGB(hueValue, 1, 1);
+			} else {
+
+				Color c;
+
+				do {
+					c = Color.HSVToRGB(rndFloat(), 1, 1);
+				} while (getColorsDistance(c, last) < 0.15d);
+			
+				last = c;			
+			
+				return c;
+			}
 		}
+
+		static double getColorsDistance(Color c1, Color c2)
+		{
+
+			float h0, s0, v0;
+			float h1, s1, v1;
+
+			Color.RGBToHSV(c1, out h0, out s0, out v0);
+			Color.RGBToHSV(c2, out h1, out s1, out v1);
+
+			double distance = Math.Abs(h1 - h0);
+
+			return distance;
+		}
+		
+		static float rndFloat()
+		{
+			return (float)rnd.NextDouble();
+		}
+ 
 	}
+
 }

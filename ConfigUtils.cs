@@ -11,7 +11,7 @@ namespace HuXTUS
 		readonly StageColorPlugin main;
 		PluginConfiguration cfg;
 		
-		public System.Random rnd = new System.Random ();
+		public System.Random rnd = new System.Random();
 		
 		public ConfigUtils(StageColorPlugin p)
 		{
@@ -49,6 +49,8 @@ namespace HuXTUS
 
 			string guiMode = cfg.GetValue<string>("gui_mode", PluginModes.PART_COLORING.ToString());
 			main.pluginMode = (PluginModes)Enum.Parse(typeof(PluginModes), guiMode);
+			
+			NiceColorGenerator.isRainbow = cfg.GetValue<bool>("IsRainbow");
 
 		}
 
@@ -57,6 +59,10 @@ namespace HuXTUS
 			cfg["gui_position"] = new Rect(main._windowsPosition);
 			
 			cfg["gui_mode"] = main.pluginMode.ToString();
+			
+			cfg["IsRainbow"] = NiceColorGenerator.isRainbow;
+			
+			  
 		}
 		
 		void saveColorsToCfg()
@@ -108,7 +114,31 @@ namespace HuXTUS
 			main._buttonFunnyStyle = new GUIStyle(HighLogic.Skin.button);
 			main._buttonFunnyStyle.normal.background = Utils.makeTexFunny(250, 250, 2);
 			main._buttonFunnyStyle.hover.background = Utils.makeTexFunny(250, 250, 3);
-			main._buttonFunnyStyle.active.background = Utils.makeTexFunny(250, 250, 1);			
+			main._buttonFunnyStyle.active.background = Utils.makeTexFunny(250, 250, 1);	
+
+			main._buttonColorizingStyle = new GUIStyle(HighLogic.Skin.button);
+			main._buttonColorizingStyle.normal.background = Utils.makeTexFromColor(1, 1, XKCDColors.Gold);
+			main._buttonColorizingStyle.hover.background = Utils.makeTexFromColor(1, 1, XKCDColors.LightGold);
+			main._buttonColorizingStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.PaleGold);
+			
+			main._buttonRandomStyle = new GUIStyle(HighLogic.Skin.button);
+			main._buttonRandomStyle.normal.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
+			main._buttonRandomStyle.hover.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
+			main._buttonRandomStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
+			
+			main._buttonRainbowStyle = new GUIStyle(HighLogic.Skin.button);
+			Texture2D texRainbow = Utils.makeTexRainbow(250);
+			main._buttonRainbowStyle.normal.background = texRainbow;
+			main._buttonRainbowStyle.hover.background = texRainbow;
+			main._buttonRainbowStyle.active.background = texRainbow;	
+			main._buttonRainbowStyle.normal.textColor = XKCDColors.AlmostBlack;
+			main._buttonRainbowStyle.hover.textColor = XKCDColors.AlmostBlack;
+			main._buttonRainbowStyle.active.textColor = XKCDColors.AlmostBlack;
+			
+			main._buttonColorizingStyle = new GUIStyle(HighLogic.Skin.button);
+			main._buttonColorizingStyle.normal.background = Utils.makeTexFromColor(1, 1, XKCDColors.Gold);
+			main._buttonColorizingStyle.hover.background = Utils.makeTexFromColor(1, 1, XKCDColors.LightGold);
+			main._buttonColorizingStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.PaleGold);
 
 			var redThumbTex = Utils.makeTexFromColor(1, 1, Color.red);
 			main._sliderStyleThumbRed = new GUIStyle(HighLogic.Skin.horizontalSliderThumb);
