@@ -10,4 +10,4 @@ simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
 ![example](https://pp.userapi.com/c841520/v841520660/1166/iplr3zeCaNU.jpg)
 
 
-Compiled plugin for Windows: https://github.com/HuXTUS/KSP-StageColorPlugin/releases
+Compiled plugin (Windows) download: https://github.com/HuXTUS/KSP-StageColorPlugin/releases
