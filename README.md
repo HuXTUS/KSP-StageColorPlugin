@@ -4,7 +4,7 @@ User can change icon' colors on stage
  <br />
 main mode demonstration https://www.youtube.com/watch?v=wW9lU2d9DmM <br />
 simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
-
+<br />
 ![example](https://pp.userapi.com/c841520/v841520660/115f/0quV67z0Bng.jpg)
 ![example](https://pp.userapi.com/c841520/v841520660/1166/iplr3zeCaNU.jpg)
 
