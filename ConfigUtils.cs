@@ -122,9 +122,9 @@ namespace HuXTUS
 			main._buttonColorizingStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.PaleGold);
 			
 			main._buttonRandomStyle = new GUIStyle(HighLogic.Skin.button);
-			main._buttonRandomStyle.normal.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
-			main._buttonRandomStyle.hover.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
-			main._buttonRandomStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.AlmostBlack);
+			main._buttonRandomStyle.normal.background = Utils.makeTexFromColor(1, 1, XKCDColors.GreyBrown);
+			main._buttonRandomStyle.hover.background = Utils.makeTexFromColor(1, 1, XKCDColors.GreyBrown);
+			main._buttonRandomStyle.active.background = Utils.makeTexFromColor(1, 1, XKCDColors.GreyBrown);
 			
 			main._buttonRainbowStyle = new GUIStyle(HighLogic.Skin.button);
 			Texture2D texRainbow = Utils.makeTexRainbow(250);
