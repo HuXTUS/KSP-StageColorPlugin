@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="ColorData.cs" />
     <Compile Include="ConfigUtils.cs" />
+    <Compile Include="Dict.cs" />
     <Compile Include="NiceColorGenerator.cs" />
     <Compile Include="PluginMode.cs" />
     <Compile Include="StageColorPlugin.cs" />

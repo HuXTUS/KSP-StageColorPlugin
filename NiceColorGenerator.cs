@@ -22,16 +22,22 @@ namespace HuXTUS
 		public static void reset(int count)
 		{
 			step = (count > 0) ? 1.0f / (float)count : 0.2f;
+			hueValue += 0.1f;
+			stepHueValue();
+		}
+		
+		static void stepHueValue()
+		{
 			hueValue += step;
+			while (hueValue > 1.0f)
+				hueValue -= 1.0f;
 		}
 				
 		public static Color next()
 		{
 			
 			if (isRainbow) {
-				hueValue += step;
-				if (hueValue > 1)
-					hueValue -= 1.0f;
+				stepHueValue();
 				return Color.HSVToRGB(hueValue, 1, 1);
 			} else {
 

@@ -16,6 +16,8 @@ namespace HuXTUS
 		private float updateInterval = 0.3f;
 		
 		ConfigUtils config;
+		
+		Dict dict;
 
 		public Hashtable hashColors = new Hashtable();
 		
@@ -34,6 +36,8 @@ namespace HuXTUS
 				config.initStyles();			
 
 				config.readConfig();
+				
+				dict = new Dict();
 				
 				_isLoaded = true;
 			}			
@@ -142,7 +146,7 @@ namespace HuXTUS
 				if (pluginMode == PluginModes.PART_COLORING)
 					caption = selectedIcons[0].partType;
 				else if (pluginMode == PluginModes.SIMPLE)
-					caption = "Simple mode";
+					caption = dict.WindowCaptionSingleMode;
 				else
 					caption = pluginMode.ToString();
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowExpanded, caption, _windowStyle);
@@ -166,14 +170,14 @@ namespace HuXTUS
 		{
 			GUILayout.BeginVertical();
 			
-			_curentColorDataItem.isHereBackground = GUILayout.Toggle(_curentColorDataItem.isHereBackground, _curentColorDataItem.isHereBackground ? "Background color ON" : "Background color OFF", _toggleStyle);
+			_curentColorDataItem.isHereBackground = GUILayout.Toggle(_curentColorDataItem.isHereBackground, _curentColorDataItem.isHereBackground ? dict.BackgroundColorON : dict.BackgroundColorOFF, _toggleStyle);
 			if (_curentColorDataItem.isHereBackground) {
 				_curentColorDataItem.backgroundColor.r = GUILayout.HorizontalSlider(_curentColorDataItem.backgroundColor.r, 0, 1, _sliderStyle, _sliderStyleThumbRed);
 				_curentColorDataItem.backgroundColor.g = GUILayout.HorizontalSlider(_curentColorDataItem.backgroundColor.g, 0, 1, _sliderStyle, _sliderStyleThumbGreen);
 				_curentColorDataItem.backgroundColor.b = GUILayout.HorizontalSlider(_curentColorDataItem.backgroundColor.b, 0, 1, _sliderStyle, _sliderStyleThumbBlue);
 			}
 
-			_curentColorDataItem.isHereIcon = GUILayout.Toggle(_curentColorDataItem.isHereIcon, _curentColorDataItem.isHereIcon ? "Icon color ON" : "Icon color OFF", _toggleStyle);
+			_curentColorDataItem.isHereIcon = GUILayout.Toggle(_curentColorDataItem.isHereIcon, _curentColorDataItem.isHereIcon ? dict.IconColorON : dict.IconColorOFF, _toggleStyle);
 			if (_curentColorDataItem.isHereIcon) {
 				_curentColorDataItem.iconColor.r = GUILayout.HorizontalSlider(_curentColorDataItem.iconColor.r, 0, 1, _sliderStyle, _sliderStyleThumbRed);
 				_curentColorDataItem.iconColor.g = GUILayout.HorizontalSlider(_curentColorDataItem.iconColor.g, 0, 1, _sliderStyle, _sliderStyleThumbGreen);
@@ -195,20 +199,20 @@ namespace HuXTUS
 			GUILayout.BeginVertical();
 
 			//Reset
-			GUILayout.Label("Reset stage icons colors", _labelStyle);
-			if (GUILayout.Button("Reset", _buttonSimpleStyle)) {
+			GUILayout.Label(dict.ResetStageIconsColors, _labelStyle);
+			if (GUILayout.Button(dict.Reset1, _buttonSimpleStyle)) {
 				clearStageColors();
 			}
 			
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("Toggle", _buttonColorizingStyle)) {
+			if (GUILayout.Button(dict.Toggle1, _buttonColorizingStyle)) {
 				NiceColorGenerator.isRainbow = !NiceColorGenerator.isRainbow;
 			}				
 			string buttonColorizingModeCaption;
 			if (NiceColorGenerator.isRainbow)
-				buttonColorizingModeCaption = "colorizing like Rainbow ";
+				buttonColorizingModeCaption = dict.ColorizingLikeRainbow;
 			else
-				buttonColorizingModeCaption = "colorizing Random colors";				
+				buttonColorizingModeCaption = dict.ColorizingRandomColors;
 
 			_randomTextColorHUE += 0.001f;
 			if (_randomTextColorHUE > 1)
@@ -221,32 +225,32 @@ namespace HuXTUS
 			GUILayout.Button(buttonColorizingModeCaption, NiceColorGenerator.isRainbow ? _buttonRainbowStyle : _buttonRandomStyle);
 			GUILayout.EndHorizontal();
 			
-			//Random all
-			GUILayout.Label("Set colors to all ICONS", _labelStyle);
+			//All icons
+			GUILayout.Label(dict.SetColorsToAllICONS, _labelStyle);
 			
 			GUILayout.BeginHorizontal();
 			
-			if (GUILayout.Button("Back colors", _buttonSimpleStyle)) {
+			if (GUILayout.Button(dict.AllBackColors, _buttonSimpleStyle)) {
 				randomizeAllStageIconsColors(true, false);
 			}						
 			
-			if (GUILayout.Button("Icon colors", _buttonSimpleStyle)) {
+			if (GUILayout.Button(dict.AllIconColors, _buttonSimpleStyle)) {
 				randomizeAllStageIconsColors(false, true);
 			}
 		
 			GUILayout.EndHorizontal();
 
 
-			//Random stages
-			GUILayout.Label("Colorize STAGES separately", _labelStyle);
+			//Stages
+			GUILayout.Label(dict.ColorizeSTAGESSeparately, _labelStyle);
 			
 			GUILayout.BeginHorizontal();
 			
-			if (GUILayout.Button("Back colors", _buttonSimpleStyle)) {
+			if (GUILayout.Button(dict.StagesBackColors, _buttonSimpleStyle)) {
 				randomizeSeparatelyStageColors(true, false);
 			}						
 			
-			if (GUILayout.Button("Icon colors", _buttonSimpleStyle)) {
+			if (GUILayout.Button(dict.StagesIconColors, _buttonSimpleStyle)) {
 				randomizeSeparatelyStageColors(false, true);
 			}
 		
@@ -264,11 +268,11 @@ namespace HuXTUS
 		{
 			GUILayout.BeginHorizontal();
 				
-			if (GUILayout.Button("Mode", _buttonModeStyle)) {
+			if (GUILayout.Button(dict.Mode, _buttonModeStyle)) {
 				changeMode();
 			}
 				
-			if (GUILayout.Button("Apply and Hide", _buttonApplyStyle)) {
+			if (GUILayout.Button(dict.ApplyAndHide, _buttonApplyStyle)) {
 
 				config.saveConfig();
 
@@ -283,7 +287,7 @@ namespace HuXTUS
 
 			GUILayout.BeginVertical();
 			
-			if (GUILayout.Button("Show", _buttonFunnyStyle)) {
+			if (GUILayout.Button(dict.Show, _buttonFunnyStyle)) {
 				var selectedIcons = StageManager.Selection;			
 				if ((selectedIcons == null) || (selectedIcons.Count == 0)) {
 					ScreenMessages.PostScreenMessage("<color=orange>" + "Select stage icon first" + "</color>", 3f, ScreenMessageStyle.UPPER_CENTER);
