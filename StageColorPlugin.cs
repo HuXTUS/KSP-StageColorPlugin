@@ -79,12 +79,28 @@ namespace HuXTUS
 							hashColors[partType] = element;
 						}
 
-						icon.SetBackgroundColor(element.isHereBackground ? element.backgroundColor : ColorData.NONE_COLOR);
-						icon.SetIconColor(element.isHereIcon ? element.iconColor : ColorData.NONE_COLOR);
+						if (_guiExpanded) {
+							icon.SetBackgroundColor(element.isHereBackground ? element.backgroundColor : ColorData.NONE_COLOR);
+							icon.SetIconColor(element.isHereIcon ? element.iconColor : ColorData.NONE_COLOR);
 
-						foreach (var gicon in icon.groupedIcons) {
-							gicon.SetBackgroundColor(element.isHereBackground ? element.backgroundColor : ColorData.NONE_COLOR);
-							gicon.SetIconColor(element.isHereIcon ? element.iconColor : ColorData.NONE_COLOR);
+							foreach (var gicon in icon.groupedIcons) {
+								gicon.SetBackgroundColor(element.isHereBackground ? element.backgroundColor : ColorData.NONE_COLOR);
+								gicon.SetIconColor(element.isHereIcon ? element.iconColor : ColorData.NONE_COLOR);
+							}
+						} else {
+
+							if (element.isHereBackground)
+								icon.SetBackgroundColor(element.backgroundColor);
+							if (element.isHereIcon)
+								icon.SetIconColor(element.iconColor);
+
+							foreach (var gicon in icon.groupedIcons) {
+								if (element.isHereBackground)
+									gicon.SetBackgroundColor(element.backgroundColor);
+								if (element.isHereIcon)
+									gicon.SetIconColor(element.iconColor);
+							}
+
 						}
 					} 
 			}	
@@ -93,7 +109,7 @@ namespace HuXTUS
 
 		public Rect _windowsPosition = new Rect();
 		bool _isLoaded = false;
-		
+
 		public GUIStyle _windowStyle, _labelStyle, _toggleStyle, _sliderStyle, _buttonApplyStyle, _buttonModeStyle, _buttonSimpleStyle, _buttonFunnyStyle, _buttonColorizingStyle, _buttonRainbowStyle, _buttonRandomStyle;
 		public GUIStyle _sliderStyleThumbRed, _sliderStyleThumbGreen, _sliderStyleThumbBlue;
 
