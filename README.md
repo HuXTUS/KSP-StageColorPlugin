@@ -11,6 +11,6 @@ simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
 ![example](https://pp.userapi.com/c841521/v841521660/1d81/Ew9NLEPS7z8.jpg)
 
 
-Compiled plugin (Windows) download: https://github.com/HuXTUS/KSP-StageColorPlugin/releases
+Compiled plugin (Windows) **download**: https://github.com/HuXTUS/KSP-StageColorPlugin/releases
 
 Discussion: http://forum.kerbalspaceprogram.com/index.php?/topic/162248-13-ksp-stagecolorplugin/
