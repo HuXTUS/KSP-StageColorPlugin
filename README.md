@@ -1,9 +1,9 @@
 # KSP-StageColorPlugin
-User can change part icon colors on stage panel
+User can change part icon colors on stage panel.
 
  <br />
-main mode demonstration https://www.youtube.com/watch?v=yVYps3dgQa8 <br />
-simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
+Main mode demonstration https://www.youtube.com/watch?v=yVYps3dgQa8 <br />
+Simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
 
 ![example](https://pp.userapi.com/c841521/v841521660/1d67/zSUkPK_noqo.jpg)
 ![example](https://pp.userapi.com/c841521/v841521660/1d73/6WIx9hlSk_k.jpg)
