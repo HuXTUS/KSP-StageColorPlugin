@@ -1,5 +1,5 @@
 # KSP-StageColorPlugin
-User can change icon' colors on stage
+User can change part icon colors on stage panel
 
  <br />
 main mode demonstration https://www.youtube.com/watch?v=yVYps3dgQa8 <br />
@@ -12,3 +12,5 @@ simple mode https://www.youtube.com/watch?v=QUHjn5cWGjM
 
 
 Compiled plugin (Windows) download: https://github.com/HuXTUS/KSP-StageColorPlugin/releases
+
+Discussion: http://forum.kerbalspaceprogram.com/index.php?/topic/162248-13-ksp-stagecolorplugin/
