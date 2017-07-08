@@ -138,9 +138,8 @@ namespace HuXTUS
 				_windowsPosition.yMin = 500;
 			}
 
-			_windowsPosition.height = 10;
+			
 			if (_guiExpanded) {
-				_windowStyle.fixedWidth = 250;
 				
 				string caption;
 				if (pluginMode == PluginModes.PART_COLORING)
@@ -151,7 +150,6 @@ namespace HuXTUS
 					caption = pluginMode.ToString();
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowExpanded, caption, _windowStyle);
 			} else {
-				_windowStyle.fixedWidth = 80;
 				_windowsPosition = GUILayout.Window(10, _windowsPosition, OnWindowMinimized, "S C P", _windowStyle);	
 			}
 		}
@@ -273,10 +271,12 @@ namespace HuXTUS
 			}
 				
 			if (GUILayout.Button(dict.ApplyAndHide, _buttonApplyStyle)) {
+				_windowsPosition.height = 10;
 
 				config.saveConfig();
 
 				_guiExpanded = false;
+				_windowStyle.fixedWidth = 80;
 			}
 			GUILayout.EndHorizontal();
 			
@@ -294,6 +294,7 @@ namespace HuXTUS
 					return;
 				} else {
 					_guiExpanded = true;
+					_windowStyle.fixedWidth = 250;
 				}
 			}        
 			
@@ -306,6 +307,9 @@ namespace HuXTUS
 		
 		void changeMode()
 		{
+			
+			_windowsPosition.height = 10;
+			
 			if (pluginMode == PluginModes.PART_COLORING)
 				pluginMode = PluginModes.SIMPLE;
 			else if (pluginMode == PluginModes.SIMPLE)

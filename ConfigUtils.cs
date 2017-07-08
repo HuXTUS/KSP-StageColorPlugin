@@ -46,6 +46,8 @@ namespace HuXTUS
 		void readGUIConfig()
 		{
 			main._windowsPosition = cfg.GetValue<Rect>("gui_position");
+			main._windowsPosition.height = 10;
+				
 
 			string guiMode = cfg.GetValue<string>("gui_mode", PluginModes.PART_COLORING.ToString());
 			main.pluginMode = (PluginModes)Enum.Parse(typeof(PluginModes), guiMode);
@@ -87,7 +89,8 @@ namespace HuXTUS
 		public void initStyles()
 		{
 			main._windowStyle = new GUIStyle(HighLogic.Skin.window);
-			main._windowStyle.fixedWidth = 250;
+//			main._windowStyle.fixedWidth = 250;
+			main._windowStyle.fixedWidth = 80;			
 
 			main._labelStyle = HighLogic.Skin.label;
 			
